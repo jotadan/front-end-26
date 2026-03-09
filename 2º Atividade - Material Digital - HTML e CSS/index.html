@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linguagem C</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header> 
+        <h1> Bem vindo ao Material de Estudo Digital </h1>
+
+        <nav>
+            <ul>
+                <li><a href="#introducao">Introdução</a></li>
+                <li><a href="#estrutura">Estrutura</a></li>
+                <li><a href="#entrada-saida">Entrada e Saída</a></li>
+                <li><a href="#desvio">Desvio Condicional</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="introducao"> 
+            <h1> Introdução </h1>
+            <p> 
+                C é uma linguagem de programação antiga e que serviu como base para a criação de outras linguagens. 
+                Estuda-se C para compreender conceitos simples de lógica e programação. 
+                Usa-se C em sistemas que fazem uso de pouco processamento e possuem pouca memória disponível. 
+            </p>
+        </section>
+
+        <section id="estrutura">
+            <h1> Estrutura Básica </h1>
+            <h2> Bibliotecas </h2>
+            <p> 
+                Se atente a iniciar os programas com a inclusão das bibliotecas desejadas. 
+                De inicio, vou passar apenas alguns comandos da stdio.h, stdlib.h, locale.h, stdbool.h e windows.h
+                Nesse momento, lembre apenas que a stdio.h (Standard input Output) cuida das entradas, processamentos e saídas.
+                Segue o exemplo: 
+            </p>
+                <pre><code>#include &lt;nomedabiblioteca.h&gt;
+                #include &lt;stdio.h&gt;</code></pre>
+                <h3>Funções de cada uma delas</h3>
+                <ul>
+                    <li><strong>stdio.h:</strong> Entrada e saída de dados</li>
+                    <li><strong>stdlib.h:</strong> Utilidades gerais</li>
+                    <li><strong>stdbool.h:</strong> Tipo booleano</li>
+                    <li><strong>locale.h:</strong> Caracteres especiais</li>
+                </ul>
+            <h3> Main </h2>
+            <p>A função main é o ponto de partida de todo programa em C. É por onde o código começa a ser executado. Geralmente é do tipo Int e retorna 0 Segue o exemplo</p>
+            <br>
+            <span> 
+                <br>
+                #include <stdio.h>
+                <br>
+                int main(){
+                <br>
+                return 0;
+                <br>
+                }
+                <br>
+            </span>
+        </section>
+
+        <section id="entrada-saida">
+            <h1>Entrada e saída de dados</h1>
+            <p>
+                Em C, a biblioteca stdio.h é responsável pela maioria das operações de entrada e saída de dados. 
+                Existem algumas formas de coletar diferentes tipos de dados, algumas mais adaptáveis e seguras 
+                que as outras, contudo, iremos trabalhar apenas com duas.
+            </p>
+
+            <h2>printf</h2>
+            <p>
+                A função printf é responsável por apresentar os valores na tela. 
+                A sintaxe básica é:
+                <br>
+                <span>
+                <br>
+                    int main(){
+                <br>
+                        printf("Olá!");
+                <br>
+                        return 0;
+                <br>
+                    }
+                <br>
+                </span>
+                    A função printf também pode ser usada para imprimir o valor das variáveis. Para isso, veremos os especificadores de formato.
+                </p>
+                <table border="1">
+                    <tr>
+                        <th>Especificador</th>
+                        <th>Tipo de Dados</th>
+                    </tr>
+                    <tr>
+                        <td>%c</td>
+                        <td>char</td>
+                    </tr>
+                    <tr>
+                        <td>%s</td>
+                        <td>string</td>
+                    </tr>
+                    <tr>
+                        <td>%d</td>
+                        <td>inteiro</td>
+                    </tr>
+                    <tr>
+                        <td>%i</td>
+                        <td>inteiro</td>
+                    </tr>
+                    <tr>
+                        <td>%f</td>
+                        <td>float</td>
+                    </tr>
+                    <tr>
+                        <td>%lf</td>
+                        <td>double</td>
+                    </tr>
+                </table>
+                <h2>scanf</h2>
+                <p>
+                    A função scanf é usada para ler e armazenar um valor digitado pelo usuário. Ela recebe como parâmetros 
+                    o tipo dado a ser armazenado e o endereço da variável para onde será armazenado.
+                    <br>
+                    <span>
+                        scanf("%d", &idade);
+                    </span>
+                </p>
+        </section>
+
+        <section id="desvio">
+            <h1>Desvio Condicional</h1>
+            <p>
+                Conhecido também como Tomada de Decisão e Estrutura de Controle. 
+                Tem como objetivo desviar o caminho de execução dos comandos de 
+                acordo com a condição ou condições impostas juntamente com uso de <ins><i>operadores</i></ins>.
+            </p>
+            <h2>Simples</h2>
+            <p>
+                Este é o desvio condicional simples, é contido de uma ou mais condições e um único caminho, 
+                apenas caso a condição (ou condições) seja satisfeita.
+            </p>
+            <pre>
+                <code>
+                    #include &lt;stdio.h&gt;
+                    int main() {
+                        float n1, n2, med; 
+                    
+                        printf("Primeiro nota: ");
+                        scanf("%f", &n1);
+                    
+                        printf("Segundo nota: ");
+                        scanf("%f", &n2);
+                        med = (n1 + n2) / 2.0;
+                    
+                        if (med >= 6.0) {
+                            printf("Media: %.2f\n", med);
+                        }
+
+                        return 0; 
+                    }
+                </code>
+            </pre>
+            <h2>Condicional</h2>
+            <p>
+                O Desvio Condicional composto é contido por uma ou mais condições e <strong> dois caminhos </strong> 
+                a seguir, ou seja, se verdadeiro toma-se o caminho IF, se falso, toma-se o caminho ELSE.
+            </p>
+            <pre>
+                <code>
+                    #include &lt;stdio.h&gt;
+
+                    int main() {
+                        float n1, n2, med; 
+                    
+                        printf("Primeiro nota: ");
+                        scanf("%f", &n1);
+                    
+                        printf("Segundo nota: ");
+                        scanf("%f", &n2);
+                    
+                        med = (n1 + n2) / 2;
+                    
+                        printf("Media: %.2f\n", med);
+                        
+                        if (med >= 6.0) {
+                            printf("APROVADO!\n");
+                        } else {
+                            printf("REPROVADO!\n");
+                        }
+                        
+                        return 0; 
+                    }
+                </code>
+            </pre>
+            <h2>Encadeado/Aninhada</h2>
+            <p>
+                Tanto no desvio simples quanto no composto, podemos utilizar, se necessário for, desvio condicional encadeado,
+                ou seja, a resultante de uma condição (else if) pode ser outra condição.
+            </p>
+            <pre>
+                <code>
+                    #include &lt;stdio.h&gt;
+                    
+                    int main() {
+                        float num; 
+                    
+                        printf("Informe um numero de 1 a 3: "); 
+                        scanf("%f", &num); 
+                    
+                        if (num == 1) {
+                            printf("Um\n");
+                        } else if (num == 2) {
+                            printf("Dois\n");
+                        } else {
+                            printf("Tres\n");
+                        }
+                        
+                        return 0;
+                    }
+                </code>
+            </pre>
+            <h2>Múltipla Escolha</h2>
+            <p>
+                Este comando permite uma decisão múltipla, usamos quando formos comparar uma variável com vários valores possíveis. 
+            </p>
+            <pre>
+                <code>
+                    #include &lt;stdio.h&gt;
+                    
+                    int main() {
+                        int dia; 
+                    
+                        printf("Digite um numero de 1 a 7: "); 
+                    
+                        scanf("%d", &dia); 
+                    
+                        switch (dia) {
+                            case 1:
+                                printf("Domingo\n");
+                                break;
+
+                            case 2:
+                                printf("Segunda-Feira\n");
+                                break;
+
+                            case 3:
+                                printf("Terça-Feira\n");
+                                break;
+
+                            case 4:
+                                printf("Quarta-Feira\n");
+                                break;
+
+                            case 5:
+                                printf("Quinta-Feira\n");
+                                break;
+
+                            case 6:
+                                printf("Sexta-Feira\n");
+                                break;
+
+                            case 7:
+                                printf("Sábado\n");
+                                break;
+
+                            default:
+                                printf("Invalido, tente novamente!\n");
+                        } 
+                    
+                        return 0; 
+                    }
+                </code>
+            </pre>
+        </section>
+        <section id="formulario">
+            <h1>Avalie meu Material!</h1>
+            <p>Deixe seu feedback para que eu possa melhorar este conteúdo!</p>
+
+            <form action="/salvar-avaliacao" method="POST">
+                <fieldset>
+
+                    <label for="nome">Nome:</label><br>
+                    <input type="text" id="nome" name="nome"><br><br>
+
+                    <label for="turma">Turma:</label><br>
+                    <input type="text" id="turma" name="turma"><br><br>
+
+                    <label for="semestre">Semestre:</label><br>
+                    <input type="text" id="semestre" name="semestre"><br><br>
+
+                    <label>Nota:</label><br>
+                    <input type="radio" name="nota" value="Ruim"> Ruim
+                    <input type="radio" name="nota" value="Regular"> Regular
+                    <input type="radio" name="nota" value="Bom"> Bom
+                    <input type="radio" name="nota" value="Muito bom"> Muito bom
+                    <input type="radio" name="nota" value="Excelente"> Excelente<br><br>
+
+                    <label for="comentario">Comentários ou sugestões:</label><br>
+                    <textarea id="comentario" name="comentario" rows="4" cols="50" placeholder="Escreva aqui..."></textarea>
+
+                    <br>
+                    
+                    <button type="submit">Enviar Avaliação</button>
+
+                </fieldset>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Material de Estudo Digital. Todos os direitos reservados a João Daniel, este usuário odeia CSS com todas as forças.</p>
+    </footer>
+
+</body>
+</html>
