@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>GRUPOS E FATOS</h1>
+    </header>
+    <main>
+        <div id="Group-A">
+            <h1>🅰️ Grupo A</h1>
+            <h2>Seleções</h2>
+            <ul>
+                <li>México</li>
+                <li>África do Sul</li>
+                <li>Coreia do Sul</li>
+                <li>República Tcheca</li>
+            </ul>
+            <details>
+                <summary><strong>FATOS</strong></summary>
+                <p>
+                    O jogo de abertura será México x África do Sul. Confrontos entre Coreia do Sul e seleções europeias
+                    já ocorreram em várias Copas, com histórico equilibrado.
+                </p>
+            </details>
+        </div>
+
+        <div id="Group-B">
+            <h1>🅱️ Grupo B</h1>
+            <h2>Seleções</h2>
+            <ul>
+                <li>Canadá</li>
+                <li>Suíça</li>
+                <li>Catar</li>
+                <li>Vaga Europeia (Bósnia)</li>
+            </ul>
+            <details>
+                <summary><strong>FATOS</strong></summary>
+                <p>
+                    O Canadá joga em casa, fator importante de desempenho. Catar e Suíça já se enfrentaram recentemente
+                    em amistosos internacionais.
+                </p>
+            </details>
+        </div>
+
+        <div id="Group-C">
+            <h1>🅲 Grupo C</h1>
+            <h2>Seleções</h2>
+            <ul>
+                <li>Brasil</li>
+                <li>Marrocos</li>
+                <li>Haiti</li>
+                <li>Escócia</li>
+            </ul>
+            <details>
+                <summary><strong>FATOS</strong></summary>
+                <p>
+                    Brasil, Marrocos e Escócia já dividiram grupo em 1998. Brasil nunca perdeu para a Escócia em Copas.
+                </p>
+            </details>
+        </div>
+    </main>
+
+    <button onclick="trocarGrupo()" id="btn-proximo">Próximo</button>
+
+    <script>
+        function trocarGrupo() {
+            const novosDados = [
+                {
+                    id: "Group-A",
+                    titulo: "🅳 Grupo D",
+                    selecoes: ["Estados Unidos", "Paraguai", "Austrália", "Turquia"],
+                    fatos: "Os EUA jogam em casa, vantagem histórica em Copas. Austrália enfrenta frequentemente seleções sul-americanas em torneios."
+                },
+                {
+                    id: "Group-B",
+                    titulo: "🅴 Grupo E",
+                    selecoes: ["Alemanha", "Equador", "Costa do Marfim", "Curaçao"],
+                    fatos: "Alemanha costuma dominar fases de grupos. Equador e Costa do Marfim têm estilos físicos semelhantes."
+                },
+                {
+                    id: "Group-C",
+                    titulo: "🅵 Grupo F",
+                    selecoes: ["Holanda", "Japão", "Tunísia", "Suécia"],
+                    fatos: "Brasil, Marrocos e Escócia já dividiram grupo em 1998. Brasil nunca perdeu para a Escócia em Copas."
+                }
+            ];
+
+            novosDados.forEach(grupo => {
+                const container = document.getElementById(grupo.id);
+
+                if (container) {
+                    container.querySelector("h1").innerText = grupo.titulo;
+
+                    const lista = container.querySelector("ul");
+                    lista.innerHTML = "";
+
+                    grupo.selecoes.forEach(pais => {
+                        const li = document.createElement("li");
+                        li.innerText = pais;
+                        lista.appendChild(li);
+                    });
+
+                    container.querySelector("details p").innerText = grupo.fatos;
+                }
+            });
+
+            const botao = document.getElementById("btn-proximo");
+            botao.disabled = true;
+            botao.innerText = "Grupos Atualizados";
+        }
+    </script>
+</body>
+
+</html>
