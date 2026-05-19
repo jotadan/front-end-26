@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Bank - Lista de Convidados VIP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        main {
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 550px;
+        }
+
+        h2 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+            background-color: #f8fafc;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        .btn-add {
+            padding: 12px 24px;
+            background-color: #6366f1;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-add:hover {
+            background-color: #4f46e5;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #f1f5f9;
+            transition: all 0.3s ease;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .guest-name {
+            font-size: 1.05rem;
+            color: #334155;
+            font-weight: 500;
+            transition: all 0.2s;
+            word-break: break-all;
+            padding-right: 15px;
+        }
+
+        .classe-riscado {
+            text-decoration: line-through;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        .actions-group {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .btn-action {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-check {
+            background-color: #f0fdf4;
+            color: #166534;
+        }
+
+        .btn-check:hover {
+            background-color: #bbf7d0;
+        }
+
+        .btn-edit {
+            background-color: #fef9c3;
+            color: #854d0e;
+        }
+
+        .btn-edit:hover {
+            background-color: #fef08a;
+        }
+
+        .btn-delete {
+            background-color: #fef2f2;
+            color: #991b1b;
+        }
+
+        .btn-delete:hover {
+            background-color: #fecaca;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h2>Infinity Bank</h2>
+        <p class="subtitle">Lista de Convidados VIP</p>
+
+        <div class="input-group">
+            <input type="text" id="guestNameInput" placeholder="Nome do convidado VIP..." autocomplete="off">
+            <button class="btn-add" id="btnAddGuest">Adicionar</button>
+        </div>
+
+        <ul id="guestList"></ul>
+    </main>
+
+    <script>
+        const inputNome = document.getElementById('guestNameInput');
+        const botaoAdicionar = document.getElementById('btnAddGuest');
+        const listaUI = document.getElementById('guestList');
+
+        let listaConvidados = [];
+
+        function renderizarLista() {
+            listaUI.innerHTML = "";
+
+            for (let i = 0; i < listaConvidados.length; i++) {
+                let convidado = listaConvidados[i];
+                let classeRiscado = convidado.chegou ? "guest-name classe-riscado" : "guest-name";
+                let textoBotaoConcluir = convidado.chegou ? "Desfazer" : "Concluir";
+
+                listaUI.innerHTML += `
+                    <li>
+                        <span class="${classeRiscado}">${convidado.nome}</span>
+                        <div class="actions-group">
+                            <button class="btn-action btn-check" onclick="alternarPresenca(${i})">${textoBotaoConcluir}</button>
+                            <button class="btn-action btn-edit" onclick="editarConvidado(${i})">Editar</button>
+                            <button class="btn-action btn-delete" onclick="excluirConvidado(${i})">Excluir</button>
+                        </div>
+                    </li>
+                `;
+            }
+        }
+
+        function adicionarConvidado() {
+            const nomeFormatado = inputNome.value.trim();
+
+            if (nomeFormatado === "") {
+                alert("Por favor, digite um nome válido.");
+                return;
+            }
+
+            listaConvidados.push({ nome: nomeFormatado, chegou: false });
+
+            inputNome.value = "";
+            inputNome.focus();
+            renderizarLista();
+        }
+
+        function alternarPresenca(posicao) {
+            listaConvidados[posicao].chegou = !listaConvidados[posicao].chegou;
+            renderizarLista();
+        }
+
+        function editarConvidado(posicao) {
+            const novoNome = prompt("Editar nome do convidado:", listaConvidados[posicao].nome);
+            
+            if (novoNome !== null && novoNome.trim() !== "") {
+                listaConvidados[posicao].nome = novoNome.trim();
+                renderizarLista();
+            }
+        }
+
+        function excluirConvidado(posicao) {
+            listaConvidados.splice(posicao, 1);
+            renderizarLista();
+        }
+
+        botaoAdicionar.addEventListener('click', adicionarConvidado);
+
+        inputNome.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                adicionarConvidado();
+            }
+        });
+    </script>
+</body>
+
+</html>

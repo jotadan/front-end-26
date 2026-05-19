@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Média Escolar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        main {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        h2 {
+            color: #1e293b;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #334155;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+        }
+
+        .row-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        #resultCard {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        #resultCard h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        #resultCard p {
+            font-size: 0.95rem;
+        }
+
+        .aprovado {
+            display: block !important;
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border: 1px solid #bfdbfe;
+        }
+
+        .exame {
+            display: block !important;
+            background-color: #f0fdf4;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+
+        .reprovado {
+            display: block !important;
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h2>Média Escolar</h2>
+
+        <div class="input-group">
+            <label for="studentName">Nome do Aluno</label>
+            <input type="text" id="studentName" placeholder="Ex: João Silva" autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <label>Notas dos Bimestres</label>
+            <div class="row-inputs">
+                <input type="number" id="nota1" placeholder="Nota 1" min="0" max="10" step="0.1">
+                <input type="number" id="nota2" placeholder="Nota 2" min="0" max="10" step="0.1">
+                <input type="number" id="nota3" placeholder="Nota 3" min="0" max="10" step="0.1">
+            </div>
+        </div>
+
+        <button id="btnCalcular">Calcular Média</button>
+
+        <div id="resultCard">
+            <h3 id="resultStatus"></h3>
+            <p id="resultInfo"></p>
+        </div>
+    </main>
+    <script>
+        const button = document.getElementById('btnCalcular');
+
+        button.addEventListener('click', () => {
+            const nome = document.getElementById('studentName').value;
+            const n1 = Number(document.getElementById('nota1').value);
+            const n2 = Number(document.getElementById('nota2').value);
+            const n3 = Number(document.getElementById('nota3').value);
+
+            let media = (n1 + n2 + n3) / 3;
+
+            const card = document.getElementById('resultCard');
+            const statusH3 = document.getElementById('resultStatus');
+            const infoP = document.getElementById('resultInfo');
+
+            if (media >= 7.0) {
+                statusH3.innerText = "Aprovado!";
+                infoP.innerText = `Parabéns ${nome}, sua média foi ${media.toFixed(2)}.`;
+                card.className = "aprovado";
+            } else if (media >= 4.0 && media < 7.0) {
+                let quantoFalta = 10 - media;
+
+                statusH3.innerText = "Exame";
+                infoP.innerText = `${nome}, sua média foi ${media.toFixed(2)}. Você precisa de ${quantoFalta.toFixed(2)} para atingir a nota 10.`;
+                card.className = "exame"
+            } else {
+                statusH3.innerText = "Reprovado";
+                infoP.innerText = `Sinto muito ${nome}, sua média foi ${media.toFixed(2)}.`;
+                card.className = "reprovado";
+            }
+        });
+    </script>
+</body>
+
+</html>

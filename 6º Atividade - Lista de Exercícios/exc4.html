@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Vendas - Infinity Bank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        main {
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        h2 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 1.6rem;
+        }
+
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+            background-color: #f8fafc;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6366f1;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #6366f1;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #4f46e5;
+        }
+
+        .receipt-container {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #e2e8f0;
+            display: none;
+        }
+
+        .receipt-container.active {
+            display: block;
+        }
+
+        .receipt-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .receipt-row.total {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h2>Infinity Bank</h2>
+        <p class="subtitle">Simulador de Taxas e Parcelamentos</p>
+
+        <div class="input-group">
+            <label for="valorVenda">Valor da Venda (R$)</label>
+            <input type="number" id="valorVenda" placeholder="0,00" step="0.01" min="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="bandeira">Bandeira do Cartão</label>
+            <select id="bandeira">
+                <option value="visa">Visa</option>
+                <option value="master">Mastercard</option>
+                <option value="elo">Elo</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="parcelas">Quantidade de Parcelas</label>
+            <select id="parcelas">
+                <option value="1">1x (À vista)</option>
+                <option value="2">2x</option>
+                <option value="3">3x</option>
+                <option value="4">4x</option>
+                <option value="5">5x</option>
+                <option value="6">6x</option>
+                <option value="7">7x</option>
+                <option value="8">8x</option>
+                <option value="9">9x</option>
+                <option value="10">10x</option>
+                <option value="11">11x</option>
+                <option value="12">12x</option>
+            </select>
+        </div>
+
+        <button id="btnSimular">Simular Transação</button>
+
+        <div id="receipt" class="receipt-container">
+            <p class="receipt-title">Resumo da Simulação</p>
+
+            <div class="receipt-row">
+                <span>Taxa da Bandeira:</span>
+                <span id="resTaxa">R$ 0,00</span>
+            </div>
+
+            <div class="receipt-row">
+                <span>Juros das Parcelas:</span>
+                <span id="resJuros">R$ 0,00</span>
+            </div>
+
+            <div class="receipt-row">
+                <span>Taxa Mensal Fixa:</span>
+                <span id="resTaxaMensal">R$ 0,00</span>
+            </div>
+
+            <div class="receipt-row">
+                <span>Valor por Parcela:</span>
+                <span id="resValorParcela">R$ 0,00</span>
+            </div>
+
+            <div class="receipt-row total">
+                <span>Valor Total Geral:</span>
+                <span id="resTotalGeral">R$ 0,00</span>
+            </div>
+        </div>
+    </main>
+    <script>
+        /* Desenvolva o simulador de vendas do Infinity Bank. O usuário deve escolher a bandeira, o valor e o número de parcelas.
+Use um elemento <select> para as bandeiras;
+Calcule a taxa da bandeira (Visa: 2% | Master: 1.85% | Elo: 3%);
+Aplique juros simples de 0.35% ao mês conforme o número de parcelas;
+Aplique uma taxa mensal de 12,50$ ao mês
+Exiba o resumo: Valor da Taxa, Valor dos Juros e Valor de cada Parcela.
+0,9 0,7 0,5 0,2
+Dica Extra: Use a estrutura switch em JavaScript para verificar a bandeira selecionada e aplicar a taxa correta de forma organizada.
+Descritivo de Apoio:
+Lógica de Juros:
+Juros Totais = Valor da Venda * (0.015 * quantidade_parcelas)
+Valor Total = Venda + Taxa Bandeira + Juros*/
+        document.getElementById('btnSimular').addEventListener('click', () => {
+            const bandeira = document.getElementById('bandeira').value;
+            const valorVenda = Number(document.getElementById('valorVenda').value);
+            const qtdParcela = Number(document.getElementById('parcelas').value);
+
+            let taxaBandeira = 0;
+            let taxaMensal = 12.50;
+
+            switch (bandeira) {
+                case "visa":
+                    taxaBandeira = 0.02;
+                    break;
+                case "master":
+                    taxaBandeira = 0.0185;
+                    break;
+                case "elo":
+                    taxaBandeira = 0.03;
+                    break;
+            }
+
+            let valorTaxaBandeira = valorVenda * taxaBandeira;
+            let juroTotal = valorVenda * (0.015 * qtdParcela);
+            let valorTaxaMensalTotal = taxaMensal * qtdParcela;
+
+            let valorTotal = valorVenda + valorTaxaBandeira + juroTotal + valorTaxaMensalTotal;
+            let valorCadaParcela = valorTotal / qtdParcela;
+
+            document.getElementById('resTaxa').innerText = `R$ ${valorTaxaBandeira.toFixed(2)}`;
+            document.getElementById('resJuros').innerText = `R$ ${juroTotal.toFixed(2)}`;
+            document.getElementById('resTaxaMensal').innerText = `R$ ${valorTaxaMensalTotal.toFixed(2)}`;
+            document.getElementById('resValorParcela').innerText = `R$ ${valorCadaParcela.toFixed(2)}`;
+            document.getElementById('resTotalGeral').innerText = `R$ ${valorTotal.toFixed(2)}`;
+
+            const recibo = document.getElementById('receipt');
+            recibo.className = "receipt-container active";
+        });
+    </script>
+</body>
+
+</html>

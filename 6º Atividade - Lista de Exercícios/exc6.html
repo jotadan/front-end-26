@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinity Bank - Simulador de Crédito para Eventos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        main {
+            background-color: #ffffff;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 480px;
+        }
+
+        h2 {
+            color: #1e293b;
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #64748b;
+            text-align: center;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: #1e293b;
+            outline: none;
+            transition: all 0.2s;
+            background-color: #f8fafc;
+        }
+
+        input:focus, select:focus {
+            border-color: #0284c7;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0369a1;
+        }
+
+        .receipt-container {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 2px dashed #e2e8f0;
+            display: none;
+        }
+
+        .receipt-container.active {
+            display: block;
+        }
+
+        .receipt-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #475569;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+
+        .discount-text {
+            color: #b91c1c;
+            font-weight: 500;
+        }
+
+        .receipt-row.total {
+            margin-top: 15px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #0f172a;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h2>Infinity Bank</h2>
+        <p class="subtitle">Crédito Exclusivo para Eventos</p>
+
+        <div class="input-group">
+            <label for="pacote">Pacote de Serviço</label>
+            <select id="pacote">
+                <option value="standard">Standard (R$ 50,00 / pessoa)</option>
+                <option value="premium">Premium (R$ 80,00 / pessoa)</option>
+                <option value="deluxe">Infinity Deluxe (R$ 120,00 / pessoa)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label for="qtdPessoas">Quantidade de Convidados</label>
+            <input type="number" id="qtdPessoas" placeholder="Ex: 50" min="1" step="1">
+        </div>
+
+        <button id="btnCalcular">Calcular Orçamento</button>
+
+        <div id="receipt" class="receipt-container">
+            <p class="receipt-title">Resumo do Orçamento</p>
+            
+            <div class="receipt-row">
+                <span>Custo Bruto:</span>
+                <span id="resCustoBruto">R$ 0,00</span>
+            </div>
+            
+            <div class="receipt-row">
+                <span>Taxa de Serviço (10%):</span>
+                <span id="resTaxaServico">R$ 0,00</span>
+            </div>
+
+            <div class="receipt-row">
+                <span>Desconto Fidelidade:</span>
+                <span id="resDesconto" class="discount-text">R$ 0,00</span>
+            </div>
+            
+            <div class="receipt-row total">
+                <span>Total Final:</span>
+                <span id="resTotalFinal">R$ 0,00</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('btnCalcular').addEventListener('click', () => {
+            const pacote = document.getElementById('pacote').value;
+            const qtdPessoas = Number(document.getElementById('qtdPessoas').value);
+
+            if (qtdPessoas <= 0 || isNaN(qtdPessoas)) {
+                alert("Por favor, insira uma quantidade válida de convidados.");
+                return;
+            }
+
+            let valorPorPessoa = 0;
+
+            switch (pacote) {
+                case "standard":
+                    valorPorPessoa = 50.00;
+                    break;
+                case "premium":
+                    valorPorPessoa = 80.00;
+                    break;
+                case "deluxe":
+                    valorPorPessoa = 120.00;
+                    break;
+            }
+
+            let custoBruto = valorPorPessoa * qtdPessoas;
+
+            let taxaServico = custoBruto * 0.10;
+            let subtotalComTaxa = custoBruto + taxaServico;
+
+            let desconto = 0;
+            if (qtdPessoas > 100) {
+                desconto = subtotalComTaxa * 0.05;
+            }
+
+            let totalFinal = subtotalComTaxa - desconto;
+
+            document.getElementById('resCustoBruto').innerText = `R$ ${custoBruto.toFixed(2)}`;
+            document.getElementById('resTaxaServico').innerText = `R$ ${taxaServico.toFixed(2)}`;
+            document.getElementById('resDesconto').innerText = desconto > 0 ? `- R$ ${desconto.toFixed(2)}` : `R$ 0,00`;
+            document.getElementById('resTotalFinal').innerText = `R$ ${totalFinal.toFixed(2)}`;
+
+            const recibo = document.getElementById('receipt');
+            recibo.className = "receipt-container active";
+        });
+    </script>
+</body>
+
+</html>

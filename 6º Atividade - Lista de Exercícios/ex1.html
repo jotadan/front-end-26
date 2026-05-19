@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de CPF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        main {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 0.9rem;
+            color: #666666;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #444444;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .result-message {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .result-message.success {
+            display: block;
+            background-color: #e6f4ea;
+            color: #137333;
+            border: 1px solid #c4e7cb;
+        }
+
+        .result-message.error {
+            display: block;
+            background-color: #fce8e6;
+            color: #c5221f;
+            border: 1px solid #fad2cf;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main>
+        <h2>Validador de CPF</h2>
+        <p>Insira os 11 dígitos do seu CPF para verificar a validade do documento.</p>
+
+        <form id="cpfForm" onsubmit="event.preventDefault();">
+            <div class="input-group">
+                <label for="cpfInput">Número do CPF</label>
+                <input type="text" id="cpfInput" placeholder="000.000.000-00" maxlength="14" autocomplete="off"
+                    required>
+            </div>
+
+            <button type="submit" id="validateBtn" onclick="validar()">Validar</button>
+        </form>
+
+        <div id="resultMessage" class="result-message"></div>
+    </main>
+
+    <script>
+        function validar() {
+            const cpfText = document.getElementById('cpfInput').value;
+            const cpfNumbers = cpfText.replace(/\D/g, '');
+
+            let soma1 = 0, x = 10;
+            let soma2 = 0, y = 11;
+
+            for (let i = 0; i < 9; i++) {
+                soma1 += cpfNumbers[i] * x;
+                x--
+            }
+
+            let resto1 = (soma1 * 10) % 11;
+            if (resto1 == 10) resto1 = 0;
+
+            for (let i = 0; i < 10; i++) {
+                soma2 += cpfNumbers[i] * y;
+                y--;
+            }
+
+            let resto2 = (soma2 * 10) % 11;
+            if (resto2 == 10) resto2 = 0;
+
+            const resultadoDiv = document.getElementById('resultMessage');
+            if (resto1 === Number(cpfNumbers[9]) && resto2 === Number(cpfNumbers[10])) {
+                resultadoDiv.innerText = 'CPF Válido!';
+                resultadoDiv.className = "result-message success";
+            } else {
+                resultadoDiv.innerText = 'CPF Inválido!';
+                resultadoDiv.className = "result-message error";
+            }
+        }
+    </script>
+</body>
+
+</html>
