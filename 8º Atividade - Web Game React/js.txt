@@ -1,0 +1,79 @@
+import React, { useState } from "https://esm.sh/react";
+import { createRoot } from "https://esm.sh/react-dom/client";
+import { StrictMode } from "https://esm.sh/react";
+
+const PALAVRA_SECRETA = "REACT".toUpperCase();
+const ALFABETO = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const MAX_ERROS = 6;
+
+function Forca() {
+    const [letrasAdivinhadas, setLetrasAdivinhadas] = useState([]);
+
+    const erros = letrasAdivinhadas.filter(letra => !PALAVRA_SECRETA.includes(letra)).length;
+    const perdeu = erros >= MAX_ERROS;
+    const venceu = PALAVRA_SECRETA.split("").every(letra => letrasAdivinhadas.includes(letra));
+
+    function clicarLetra(letra) {
+        if (letrasAdivinhadas.includes(letra) || perdeu || venceu) {
+            return;
+        }
+        setLetrasAdivinhadas([...letrasAdivinhadas, letra]);
+    }
+
+    function reiniciarJogo() {
+        setLetrasAdivinhadas([]);
+    }
+
+    return (
+        <div className="game">
+            <h1>Jogo da Forca</h1>
+            
+            <div className="status">
+                {venceu ? (
+                    <span style={{ color: "green" }}>🎉 Você Venceu! </span>
+                ) : perdeu ? (
+                    <span style={{ color: "red" }}>💀 Você Perdeu! A palavra era {PALAVRA_SECRETA}</span>
+                ) : (
+                    <span>Erros: {erros} / {MAX_ERROS}</span>
+                )}
+            </div>
+
+            <div className="palavra-container">
+                {PALAVRA_SECRETA.split("").map((letra, index) => {
+                    const mostrarLetra = letrasAdivinhadas.includes(letra) || perdeu;
+                    return (
+                        <div key={index} className="letra-secreta">
+                            {mostrarLetra ? letra : ""}
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className="teclado">
+                {ALFABETO.map((letra) => (
+                    <button
+                        key={letra}
+                        className="tecla"
+                        onClick={() => clicarLetra(letra)}
+                        disabled={letrasAdivinhadas.includes(letra) || perdeu || venceu}
+                    >
+                        {letra}
+                    </button>
+                ))}
+            </div>
+
+            {(venceu || perdeu) && (
+                <button className="botao-reiniciar" onClick={reiniciarJogo}>
+                    Jogar Novamente
+                </button>
+            )}
+        </div>
+    );
+}
+
+const root = createRoot(document.getElementById("root"));
+root.render(
+    <StrictMode>
+        <Forca />
+    </StrictMode>
+);

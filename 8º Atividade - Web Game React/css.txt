@@ -1,0 +1,85 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 20px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+}
+
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 500px;
+}
+
+.status {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.palavra-container {
+    margin-bottom: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.letra-secreta {
+    font-size: 32px;
+    font-weight: bold;
+    border-bottom: 3px solid #333;
+    width: 40px;
+    text-align: center;
+    height: 40px;
+    text-transform: uppercase;
+}
+
+.teclado {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.tecla {
+    background: #fff;
+    border: 1px solid #999;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.tecla:hover:not(:disabled) {
+    background: #eee;
+}
+
+.tecla:disabled {
+    background: #ccc;
+    color: #777;
+    cursor: not-allowed;
+    border-color: #aaa;
+}
+
+.botao-reiniciar {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #282c34;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
